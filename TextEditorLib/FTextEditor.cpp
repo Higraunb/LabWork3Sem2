@@ -152,7 +152,7 @@ unsigned TString::AllEntry(char* val)
 	return count;
 }
 
-void TString::AllIndexEntry(char* val)
+unsigned* TString::AllIndexEntry(char* val)
 {
 	unsigned* res = new unsigned[AllEntry(val)];
 	int tmp = strlen(val);
@@ -172,79 +172,136 @@ void TString::AllIndexEntry(char* val)
 			if (log == true)
 			{
 				res[count] = i;
-				cout << res[count] << endl;
+				/*cout << res[count] << endl;*/
 				count++;
 				i += tmp - 1;
 			}
 		}
 	}
+	return res;
 }
 char TString::MostEntry()
 {
-	int counter = 0, max = 0;
-	char res = ' ', tmp = 0;
-	for(int i = 0; i < len ; i++)
+	//int counter = 0, max = 0;
+	//char res = ' ', tmp = 0;
+	//for(int i = 0; i < len ; i++)
+	//{
+	//	for (int j = 0; j < len; j++)
+	//	{
+	//		if (str[i] == res)
+	//		{
+	//			break;
+	//		}
+	//		if ((str[j] == str[i]))
+	//		{
+	//			counter++;
+	//			tmp = str[i];
+	//		}
+	//	}
+	//	if (counter > max)
+	//	{
+	//		max = counter;
+	//		res = tmp;
+	//	}
+	//	else if (counter == max)
+	//		res = '0';
+	//	counter = 0;
+	//}
+	//return res;
+	int* tmp = new int[127];
+	char res;
+	int max = 0;
+	for (int i = 33; i < 127; i++)
+		tmp[i] = 0;
+	for (int i = 0; i < len; i++)
+		tmp[int(str[i])]++;
+	for (int i = 33; i < 127; i++)
 	{
-		for (int j = 0; j < len; j++)
+		if (max < tmp[i])
 		{
-			if (str[i] == res)
-			{
-				break;
-			}
-			if ((str[j] == str[i]))
-			{
-				counter++;
-				tmp = str[i];
-			}
+			max = tmp[i];
+			res = char(i);
 		}
-		if (counter > max)
-		{
-			max = counter;
-			res = tmp;
-		}
-		else if (counter == max)
-			res = '0';
-		counter = 0;
 	}
 	return res;
 }
 
 void TString::SymbolAndQuantity()
 {
-	int counter = 0, tmp = 0;
-	char* arr = new char[len];
+	//int counter = 0, tmp = 0;
+	//char* arr = new char[len];
+	//for (int i = 0; i < len; i++)
+	//{
+	//	for (int j = 0; j < counter; j++)
+	//	{
+	//		if (arr[j] == str[i])
+	//		{
+	//			tmp++;
+	//			break;
+	//		}
+	//	}
+	//	if (tmp == 0)
+	//	{
+	//		arr[counter] = str[i];
+	//		counter++;
+	//	}
+	//	tmp = 0;
+	//}
+	//for (int i = 0; i < counter; i++)
+	//{
+	//	for (int j = 0; j < len; j++)
+	//	{
+	//		if (arr[i] == str[j])
+	//			tmp++;
+	//	}
+	//	cout << arr[i] << " - " << tmp << endl;
+	//	tmp = 0;
+	//}
+	int* tmp = new int[127];
+	char res;
+	for (int i = 33; i < 127; i++)
+		tmp[i] = 0;
 	for (int i = 0; i < len; i++)
+		tmp[int(str[i])]++;
+	for (int i = 33; i < 127; i++)
 	{
-		for (int j = 0; j < counter; j++)
+		if(tmp[i] != 0)
 		{
-			if (arr[j] == str[i])
-			{
-				tmp++;
-				break;
+			res = char(i);
+			cout << res << " - " << tmp[i] << endl;
+		}
+	}
+}
+
+char** TString::Split(char* val) {
+	unsigned* divider = AllIndexEntry(val);
+	unsigned count = AllEntry(val);
+	int countWords = 0;
+
+	for (int i = 1; i < count; ++i) {
+		if (divider[i] - divider[i - 1] > 1) countWords++;
+	}
+
+	char** split = new char* [countWords]; 
+	int k = 0;
+
+	for (int i = 1; i < count; ++i) {
+		if (divider[i] - divider[i - 1] > 1) {
+			split[k] = new char[divider[i] - divider[i - 1]];
+			for (int j = divider[i - 1] + 1, f = 0; j < divider[i]; j++, f++) {
+				split[k][f] = str[j];
+				cout << split[k][f];
 			}
+			cout << endl;
+			split[k++][divider[i] - divider[i - 1]] = '\0';
 		}
-		if (tmp == 0)
-		{
-			arr[counter] = str[i];
-			counter++;
-		}
-		tmp = 0;
-	}
-	for (int i = 0; i < counter; i++)
-	{
-		for (int j = 0; j < len; j++)
-		{
-			if (arr[i] == str[j])
-				tmp++;
-		}
-		cout << arr[i] << " - " << tmp << endl;
-		tmp = 0;
-	}
+	}  
+	return split;
 }
 
 char* TString::LineWithoutRepetitions()
 {
-	int counter = 0, tmp = 0;
+	/*int counter = 0, tmp = 0;
 	char* arr = new char[len];
 	for (int i = 0; i < len; i++)
 	{
@@ -267,6 +324,22 @@ char* TString::LineWithoutRepetitions()
 	for (int i = 0; i < counter; i++)
 	{
 		res[i] = arr[i];
+	}
+	res[counter] = '\0';
+	return res;*/
+	int* tmp = new int[127], counter = 0;
+	char* res = new char[strlen(str)];
+	for (int i = 33; i < 127; i++)
+		tmp[i] = 0;
+	for (int i = 0; i < len; i++)
+		tmp[int(str[i])]++;
+	for (int i = 33; i < 127; i++)
+	{
+		if (tmp[i] != 0)
+		{
+			res[counter] = char(i);
+			counter++;
+		}
 	}
 	res[counter] = '\0';
 	return res;

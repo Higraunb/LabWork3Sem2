@@ -2,12 +2,7 @@
 #include "HConsole.h"
 int main()
 {
-	TConsole a(30,10);
-	a.SetInpLen(5);
-	a.Input();
-	TString d(a);
-	cout << d;
-	cin >> d;
-	cout << d;
+	TString a("qqweqeqqq22qweqqqqqq");
+	a.Split("q");
 	return 0;
 }

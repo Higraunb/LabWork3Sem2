@@ -16,10 +16,11 @@ public:
 	void SetLen(unsigned len_);
 	void SetStr(char* str_);
 	unsigned FirstEntry(char* val);
-	void AllIndexEntry(char* val);
+	unsigned* AllIndexEntry(char* val);
 	unsigned AllEntry(char* val);
 	char MostEntry();
 	void SymbolAndQuantity();
+	char** Split(char* val);
 	char* LineWithoutRepetitions();
 	bool operator != (TString& val);
 	TString operator + (TString& val);

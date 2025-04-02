@@ -95,6 +95,7 @@ void TConsole::Input()
 	system("cls");
 }
 
+
 ostream& operator << (ostream& out, TConsole& val)
 {
 	out << "x - " << val.x << endl << "y - " << val.y;
